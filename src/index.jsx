@@ -13,10 +13,11 @@ import messages from './i18n';
 import LandingPage from './pages/LandingPage';
 
 import './index.scss';
+import {store} from "./store";
 
 subscribe(APP_READY, () => {
   ReactDOM.render(
-    <AppProvider>
+    <AppProvider store={store}>
       <Header />
       <LandingPage />
       <FooterSlot />
