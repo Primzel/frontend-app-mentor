@@ -3,13 +3,13 @@ import moment from 'moment'
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import './mentor-calendar.scss'
 import {connect} from "react-redux";
-import {updateEvent} from "../pages/mentor-schedule/data/thunks";
+import {openCreateEventModal, updateEvent} from "../pages/mentor-schedule/data/thunks";
 
 const localizer = momentLocalizer(moment)
 const DnDCalendar = withDragAndDrop(Calendar);
 
 
-const MentorCalendar = ({events, updateEvent}) => {
+const MentorCalendar = ({slots, updateEvent, openCreateEventModal, createEventModalState}) => {
     const onEventDrop = (data) => {
         const {start, end, event} = data;
         updateEvent({...event, start: moment(start).toDate().valueOf(), end: moment(end).toDate().valueOf()});
@@ -27,12 +27,27 @@ const MentorCalendar = ({events, updateEvent}) => {
                 localizer={localizer}
                 onEventDrop={onEventDrop}
                 onEventResize={onEventResize}
-                events={events.map(event => ({
+                events={slots.map(event => ({
                     ...event,
-                    start: moment(event.start).toDate(),
-                    end: moment(event.end).toDate(),
+                    start: moment(event.start_time).toDate(),
+                    end: moment(event.end_time).toDate(),
                 }))}
                 resizable
+                onSelectSlot={(slotInfo) => {
+                    switch (slotInfo.event) {
+                        case 'select': {
+                            break;
+                        }
+                        default: {
+                            // when event will be click or doubleclick
+                            const start = moment(slotInfo.start).valueOf();
+                            const end = moment(slotInfo.slots[slotInfo.slots.length - 1]).valueOf();
+                            openCreateEventModal(!createEventModalState.open, start, end);
+                            break;
+                        }
+                    }
+                }}
+                selectable
             />
         </div>
     );
@@ -44,9 +59,12 @@ const mapStateToProps = (state) => {
     } = state;
     return {
         events: mentorScheduleReducer.events,
+        slots: mentorScheduleReducer.slots,
+        createEventModalState: mentorScheduleReducer.createEventModalState,
     };
 };
 
 export default connect(mapStateToProps, {
     updateEvent,
+    openCreateEventModal
 })(MentorCalendar);
