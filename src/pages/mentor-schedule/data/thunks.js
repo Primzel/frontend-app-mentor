@@ -2,9 +2,15 @@ import {
     addSlot,
     updateEvent as modifyEvent,
     openCreateEventModal as shouldOpenCreateEventModal,
-    setAppointmentSlots
+    setAppointmentSlots,
+    removeAppointmentSlot,
 } from "./slice";
-import {createAppointmentSlot, fetchAppointmentSlotApi, updateAppointmentSlotApi} from "./api";
+import {
+    createAppointmentSlot,
+    deleteAppointmentSlotApi,
+    fetchAppointmentSlotApi,
+    updateAppointmentSlotApi
+} from "./api";
 
 export function createEvent(event) {
     return async function (dispatch, getState) {
@@ -14,7 +20,7 @@ export function createEvent(event) {
     }
 }
 
-export function updateEvent(slot) {
+export function updateAppointmentSlot(slot) {
     return async function (dispatch, getState) {
         updateAppointmentSlotApi({
             start_time: slot.start_time,
@@ -25,9 +31,9 @@ export function updateEvent(slot) {
     }
 }
 
-export function openCreateEventModal(open, start, end) {
+export function openCreateEventModal(open, start, end, slotInfo) {
     return async function (dispatch) {
-        dispatch(shouldOpenCreateEventModal({open, start, end}));
+        dispatch(shouldOpenCreateEventModal({open, start, end, slotInfo}));
     }
 }
 
@@ -37,5 +43,11 @@ export function fetchAppointmentSlots(userId) {
             dispatch(setAppointmentSlots(data));
         });
 
+    }
+}
+
+export function deleteAppointmentSlot(id) {
+    return async function (dispatch) {
+        deleteAppointmentSlotApi(id).then(() => dispatch(removeAppointmentSlot(id)));
     }
 }

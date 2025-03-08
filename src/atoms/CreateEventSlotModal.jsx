@@ -1,6 +1,11 @@
 import {StandardModal} from "@openedx/paragon";
 import {connect} from "react-redux";
-import {createEvent, openCreateEventModal} from "../pages/mentor-schedule/data/thunks";
+import {
+    createEvent,
+    deleteAppointmentSlot,
+    openCreateEventModal,
+    updateAppointmentSlot
+} from "../pages/mentor-schedule/data/thunks";
 import CreateAppointmentForm from "./CreateAppointmentForm";
 import {AppContext} from "@edx/frontend-platform/react";
 import {useContext} from "react";
@@ -12,6 +17,8 @@ const CreateEventSlotModal = (props) => {
         createEventModalState,
         mode,
         openCreateEventModal,
+        deleteAppointmentSlot,
+        updateAppointmentSlot,
         title,
     } = props;
 
@@ -22,11 +29,27 @@ const CreateEventSlotModal = (props) => {
     }
 
     const onSubmit = (slot) => {
-        slot.user=authenticatedUser.userId;
-        createEvent(slot).then(() => {
+        switch (slot.action) {
+            case "update": {
+                updateAppointmentSlot({...slot, id: createEventModalState.slotInfo.id}).then(() => {
+                    close();
+                })
+                break;
+            }
+            case "create": {
+                slot.user = authenticatedUser.userId;
+                createEvent(slot).then(() => {
+                    close();
+                }).catch((error) => {
+                    console.log(error)
+                })
+                break
+            }
+        }
+    }
+    const onDelete = () => {
+        deleteAppointmentSlot(createEventModalState.slotInfo.id).then(() => {
             close();
-        }).catch((error) => {
-            console.log(error)
         })
     }
 
@@ -41,6 +64,7 @@ const CreateEventSlotModal = (props) => {
             courseId={courseId}
             onCancel={close}
             onSubmit={onSubmit}
+            onDelete={onDelete}
         />
     </StandardModal>)
 }
@@ -56,5 +80,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
     openCreateEventModal,
-    createEvent
+    createEvent,
+    deleteAppointmentSlot,
+    updateAppointmentSlot,
 })(CreateEventSlotModal);

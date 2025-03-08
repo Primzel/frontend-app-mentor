@@ -7,8 +7,10 @@ const CreateAppointmentForm = (props) => {
         selectedSlot,
         mode,
         onCancel,
-        onSubmit
+        onSubmit,
+        onDelete
     } = props;
+    const {slotInfo} = selectedSlot;
 
     return (
         <Form onSubmit={function (e) {
@@ -20,6 +22,8 @@ const CreateAppointmentForm = (props) => {
                 onSubmit({
                     start_time: moment(formData.get("start_time")).format(),
                     end_time: moment(formData.get("end_time")).format(),
+                    action: slotInfo ? "update" : "create",
+                    id: slotInfo?.id || null
                 });
             return false;
         }}
@@ -68,7 +72,8 @@ const CreateAppointmentForm = (props) => {
             <ActionRow>
                 <ActionRow.Spacer/>
                 <Button variant="tertiary" onClick={onCancel}>Cancel</Button>
-                <Button type={"submit"}>Create</Button>
+                {slotInfo && <Button variant="danger" onClick={onDelete}>Delete</Button>}
+                <Button type={"submit"}>{slotInfo ? "Update" : "Create"}</Button>
             </ActionRow>
         </Form>
     )

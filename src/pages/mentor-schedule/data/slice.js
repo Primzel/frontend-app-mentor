@@ -7,7 +7,7 @@ const slice = createSlice({
         events: [],
         loading: false,
         error: null,
-        createEventModalState: {open: false, slotInfo: {start: null, end: null}},
+        createEventModalState: {open: false, slotInfo: {start: null, end: null, slotInfo: null}},
         slots: []
     },
     reducers: {
@@ -22,6 +22,7 @@ const slice = createSlice({
                 open: !!payload.open,
                 start: payload.start,
                 end: payload.end,
+                slotInfo: payload.slotInfo,
             };
         },
         setAppointmentSlots: (state, {payload}) => {
@@ -32,6 +33,10 @@ const slice = createSlice({
             const {slot} = payload;
             state.slots.push(slot);
         },
+        removeAppointmentSlot: (state, {payload}) => {
+            const id = payload;
+            state.slots = state.slots.filter(slot => slot.id !== id);
+        },
     }
 });
 export const {
@@ -39,6 +44,7 @@ export const {
     openCreateEventModal,
     setAppointmentSlots,
     addSlot,
+    removeAppointmentSlot
 } = slice.actions
 export const {
     reducer,

@@ -11,7 +11,12 @@ export async function fetchAppointmentSlotApi(userId) {
     return getAuthenticatedHttpClient().get(url, {params: {page_size: 1000, userId: userId}});
 }
 
-export async function updateAppointmentSlotApi(slot,id) {
+export async function updateAppointmentSlotApi(slot, id) {
     const url = `${getConfig().LMS_BASE_URL}/mentoring/api/v1/mentoring-available-slots/${id}/`;
     return getAuthenticatedHttpClient().patch(url, slot);
+}
+
+export async function deleteAppointmentSlotApi(id) {
+    const url = `${getConfig().LMS_BASE_URL}/mentoring/api/v1/mentoring-available-slots/${id}/`;
+    return getAuthenticatedHttpClient().delete(url);
 }
