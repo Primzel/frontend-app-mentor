@@ -12,18 +12,19 @@ const DnDCalendar = withDragAndDrop(Calendar);
 const MentorCalendar = ({slots, updateEvent, openCreateEventModal, createEventModalState}) => {
     const onEventDrop = (data) => {
         const {start, end, event} = data;
-        updateEvent({...event, start: moment(start).toDate().valueOf(), end: moment(end).toDate().valueOf()});
+        updateEvent({...event, start_time: moment(start).format(), end_time: moment(end).format()});
     };
     const onEventResize = (data) => {
         const {start, end, event} = data;
 
-        updateEvent({...event, start: moment(start).toDate().valueOf(), end: moment(end).toDate().valueOf()});
+        updateEvent({...event, start_time: moment(start).format(), end_time: moment(end).format()});
     };
 
 
     return (
         <div className="mentor-calendar-placeholder">
             <DnDCalendar
+                defaultView="week"
                 localizer={localizer}
                 onEventDrop={onEventDrop}
                 onEventResize={onEventResize}

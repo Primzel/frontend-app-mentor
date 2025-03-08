@@ -12,9 +12,9 @@ const slice = createSlice({
     },
     reducers: {
         updateEvent: (state, {payload}) => {
-            const index = state.events.findIndex(event => event.id === payload.event.id);
+            const index = state.slots.findIndex(event => event.id === payload.slot.id);
             if (index !== -1) {
-                state.events[index] = payload.event;
+                state.slots[index] = payload.slot;
             }
         },
         openCreateEventModal: (state, {payload}) => {
