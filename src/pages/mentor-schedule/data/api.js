@@ -6,9 +6,9 @@ export async function createAppointmentSlot(slot) {
     return getAuthenticatedHttpClient().post(url, slot);
 }
 
-export async function fetchAppointmentSlotApi(userId) {
+export async function fetchAppointmentSlotApi(userId, courseId) {
     const url = `${getConfig().LMS_BASE_URL}/mentoring/api/v1/mentoring-available-slots/`;
-    return getAuthenticatedHttpClient().get(url, {params: {page_size: 1000, userId: userId}});
+    return getAuthenticatedHttpClient().get(url, {params: {page_size: 1000, user: userId, course_id: courseId}});
 }
 
 export async function updateAppointmentSlotApi(slot, id) {

@@ -24,7 +24,8 @@ export function updateAppointmentSlot(slot) {
     return async function (dispatch, getState) {
         updateAppointmentSlotApi({
             start_time: slot.start_time,
-            end_time: slot.end_time
+            end_time: slot.end_time,
+            meeting_length: slot.meeting_length
         }, slot.id).then(({data}) => {
             dispatch(modifyEvent({slot: data}));
         })
@@ -37,9 +38,9 @@ export function openCreateEventModal(open, start, end, slotInfo) {
     }
 }
 
-export function fetchAppointmentSlots(userId) {
+export function fetchAppointmentSlots(userId, courseId) {
     return async function (dispatch) {
-        fetchAppointmentSlotApi(userId).then(({data}) => {
+        fetchAppointmentSlotApi(userId, courseId).then(({data}) => {
             dispatch(setAppointmentSlots(data));
         });
 

@@ -7,7 +7,7 @@ const slice = createSlice({
         events: [],
         loading: false,
         error: null,
-        createEventModalState: {open: false, slotInfo: {start: null, end: null, slotInfo: null}},
+        createEventModalState: {open: false, slotInfo: {start: null, end: null, slotInfo: null, meeting_length: null}},
         slots: []
     },
     reducers: {

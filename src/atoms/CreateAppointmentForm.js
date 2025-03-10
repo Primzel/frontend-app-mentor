@@ -22,6 +22,7 @@ const CreateAppointmentForm = (props) => {
                 onSubmit({
                     start_time: moment(formData.get("start_time")).format(),
                     end_time: moment(formData.get("end_time")).format(),
+                    meeting_length: formData.get("meeting_length"),
                     action: slotInfo ? "update" : "create",
                     id: slotInfo?.id || null
                 });
@@ -66,6 +67,15 @@ const CreateAppointmentForm = (props) => {
                         type="datetime-local"
                         name="end_time"
                         defaultValue={moment(selectedSlot?.end).format("YYYY-MM-DDTHH:mm")}
+                    />
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formEventEnd">
+                    <Form.Control
+                        floatingLabel="Meeting Length (Minutes)"
+                        type="integer"
+                        name="meeting_length"
+                        defaultValue={slotInfo?.meeting_length || 60}
                     />
                 </Form.Group>
             </Form.Row>

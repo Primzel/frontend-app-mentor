@@ -38,6 +38,7 @@ const CreateEventSlotModal = (props) => {
             }
             case "create": {
                 slot.user = authenticatedUser.userId;
+                slot.course_id = courseId;
                 createEvent(slot).then(() => {
                     close();
                 }).catch((error) => {

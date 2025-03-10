@@ -20,7 +20,7 @@ subscribe(APP_READY, () => {
     ReactDOM.render(
         <AppProvider store={store}>
             <Routes>
-                <Route path={"/course/:courseId"} element={<>
+                <Route path={"/course/:courseId/appointments"} element={<>
                     <Header/>
                     <LandingPage/>
                     <FooterSlot/>

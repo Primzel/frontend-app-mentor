@@ -18,7 +18,7 @@ const MentorSchedule = (props) => {
 
     useEffect(() => {
         if (authenticatedUser)
-            fetchAppointmentSlots(authenticatedUser.userId);
+            fetchAppointmentSlots(authenticatedUser.userId, courseIdFromUrl);
     }, []);
 
     return (
