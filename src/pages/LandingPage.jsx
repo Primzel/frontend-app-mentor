@@ -3,7 +3,7 @@ import './landing-page.scss'
 import MentorSchedule from "./mentor-schedule/MentorSchedule";
 import ManageMentor from "./manage-mentor/ManageMentor";
 import {connect} from "react-redux";
-import {fetchMyRoles} from "../common/data/thunks";
+import {fetchMyRoles, fetchMentorList} from "../common/data/thunks";
 import {useEffect} from "react";
 import {useParams} from "react-router";
 import {usePermission} from "../common/context/PermissionContext";
@@ -11,7 +11,8 @@ import {usePermission} from "../common/context/PermissionContext";
 const LandingPage = (props) => {
     // Add actions to props here
     const {
-        fetchMyRoles
+        fetchMyRoles,
+        fetchMentorList
     } = props;
     const {courseId: courseIdFromUrl} = useParams();
 
@@ -19,9 +20,17 @@ const LandingPage = (props) => {
     useEffect(() => {
         fetchMyRoles(courseIdFromUrl);
     }, []);
+
     const {
         hasAppPermission,
     } = usePermission();
+
+    useEffect(() => {
+        if (hasAppPermission()) {
+            fetchMentorList(courseIdFromUrl);
+        }
+    }, [hasAppPermission]);
+
     return <div className="mentor-app-landing-page">
         {hasAppPermission() && <Tabs
             variant="tabs"
@@ -48,6 +57,7 @@ function mapStateToProps(state) {
 export default connect(
     mapStateToProps, {
         // Add any actions you want to map to props here
-        fetchMyRoles
+        fetchMyRoles,
+        fetchMentorList,
     }
 )(LandingPage);

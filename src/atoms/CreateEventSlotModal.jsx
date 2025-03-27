@@ -20,6 +20,7 @@ const CreateEventSlotModal = (props) => {
         deleteAppointmentSlot,
         updateAppointmentSlot,
         title,
+        listMentors,
     } = props;
 
     const {authenticatedUser} = useContext(AppContext);
@@ -37,7 +38,8 @@ const CreateEventSlotModal = (props) => {
                 break;
             }
             case "create": {
-                slot.user = authenticatedUser.userId;
+                if (!slot.user)
+                    slot.user = authenticatedUser.userId;
                 slot.course_id = courseId;
                 createEvent(slot).then(() => {
                     close();
@@ -62,6 +64,7 @@ const CreateEventSlotModal = (props) => {
         <CreateAppointmentForm
             selectedSlot={createEventModalState}
             mode={mode}
+            listMentors={listMentors}
             courseId={courseId}
             onCancel={close}
             onSubmit={onSubmit}

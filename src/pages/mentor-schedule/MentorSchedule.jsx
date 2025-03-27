@@ -15,16 +15,18 @@ const MentorSchedule = (props) => {
 
 
     const {fetchAppointmentSlots} = props;
+    const {mentorList} = props
+
 
     useEffect(() => {
         if (authenticatedUser)
-            fetchAppointmentSlots(authenticatedUser.userId, courseIdFromUrl);
+            fetchAppointmentSlots(undefined, courseIdFromUrl);
     }, []);
 
     return (
         <div className="mentor-calendar-container">
             <MentorCalendar/>
-            <CreateEventSlotModal title={"Create appointment slots."} mode="staff" courseId={courseIdFromUrl}/>
+            <CreateEventSlotModal title={"Create appointment slots."} mode="staff" courseId={courseIdFromUrl} listMentors={mentorList}/>
         </div>
     );
 }
@@ -32,6 +34,7 @@ const mapStateToProps = (state) => {
     return {
         courseId: state.mentorScheduleReducer.courseId,
         createEventModalState: state.mentorScheduleReducer.createEventModalState,
+        mentorList: state.commonReducer.mentorList,
     };
 };
 

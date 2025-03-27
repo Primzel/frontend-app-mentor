@@ -25,7 +25,8 @@ export function updateAppointmentSlot(slot) {
         updateAppointmentSlotApi({
             start_time: slot.start_time,
             end_time: slot.end_time,
-            meeting_length: slot.meeting_length
+            meeting_length: slot.meeting_length,
+            user: slot.user,
         }, slot.id).then(({data}) => {
             dispatch(modifyEvent({slot: data}));
         })

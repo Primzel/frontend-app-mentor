@@ -8,24 +8,31 @@ const CreateAppointmentForm = (props) => {
         mode,
         onCancel,
         onSubmit,
-        onDelete
+        onDelete,
+        listMentors,
     } = props;
     const {slotInfo} = selectedSlot;
-
+    console.log(slotInfo)
+    console.log(listMentors)
     return (
         <Form onSubmit={function (e) {
             e.preventDefault();
 
             const formData = new FormData(e.target)
+            const mentor = formData.get("mentor")
 
-            if (onSubmit)
-                onSubmit({
+            if (onSubmit) {
+                const payload = {
                     start_time: moment(formData.get("start_time")).format(),
                     end_time: moment(formData.get("end_time")).format(),
                     meeting_length: formData.get("meeting_length"),
                     action: slotInfo ? "update" : "create",
                     id: slotInfo?.id || null
-                });
+                }
+                if (mentor)
+                    payload.user = mentor
+                onSubmit(payload);
+            }
             return false;
         }}
         >
@@ -51,6 +58,23 @@ const CreateAppointmentForm = (props) => {
                     </Form.Text>
                 </Form.Row>
             </>)}
+            {mode === "staff" && listMentors && <Form.Row className={"mb-3"}>
+                <Form.Group as={Col} controlId="formMentorSelect">
+                    <Form.Control
+                        as="select"
+                        name="mentor"
+                        floatingLabel="Mentor"
+                        defaultValue={slotInfo?.user || ""}
+                    >
+                        {listMentors?.map((mentor) => (
+                            <option key={mentor.id} value={mentor.id}>{mentor.username}</option>
+                        ))}
+                    </Form.Control>
+                    <Form.Text>
+                        Please select the mentor for this appointment.
+                    </Form.Text>
+                </Form.Group>
+            </Form.Row>}
             <Form.Row className={"mb-1"}>
                 <Form.Group as={Col} controlId="formEventStart">
                     <Form.Control

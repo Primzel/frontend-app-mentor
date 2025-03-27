@@ -7,8 +7,13 @@ export async function createAppointmentSlot(slot) {
 }
 
 export async function fetchAppointmentSlotApi(userId, courseId) {
+    const filters = {
+        course_id: courseId
+    }
+    if (userId)
+        filters.user = userId
     const url = `${getConfig().LMS_BASE_URL}/mentoring/api/v1/mentoring-available-slots/`;
-    return getAuthenticatedHttpClient().get(url, {params: {page_size: 1000, user: userId, course_id: courseId}});
+    return getAuthenticatedHttpClient().get(url, {params: {page_size: 1000, ...filters}});
 }
 
 export async function updateAppointmentSlotApi(slot, id) {
