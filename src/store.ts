@@ -1,12 +1,14 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {reducer as mentorScheduleReducer} from './pages/mentor-schedule/data/slice';
 import {reducer as mentorManagementReducer} from './pages/manage-mentor/data/slice';
+import {reducer as commonReducer} from './common/data/slice';
 
 export default function initializeStore() {
     return configureStore({
         reducer: {
             mentorScheduleReducer,
-            mentorManagementReducer
+            mentorManagementReducer,
+            commonReducer,
         },
         // temporarily solutions to disable serializable check for plugin actions
         middleware: (getDefaultMiddleware) => getDefaultMiddleware({

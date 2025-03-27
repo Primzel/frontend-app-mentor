@@ -14,18 +14,21 @@ import LandingPage from './pages/LandingPage';
 
 import './index.scss';
 import {store} from "./store";
-import {Routes,Route} from "react-router";
+import {Routes, Route} from "react-router";
+import {PermissionProvidor} from "./common/context/PermissionContext";
 
 subscribe(APP_READY, () => {
     ReactDOM.render(
         <AppProvider store={store}>
-            <Routes>
-                <Route path={"/course/:courseId/appointments"} element={<>
-                    <Header/>
-                    <LandingPage/>
-                    <FooterSlot/>
-                </>}></Route>
-            </Routes>
+            <PermissionProvidor>
+                <Routes>
+                    <Route path={"/course/:courseId/appointments"} element={<>
+                        <Header/>
+                        <LandingPage/>
+                        <FooterSlot/>
+                    </>}></Route>
+                </Routes>
+            </PermissionProvidor>
         </AppProvider>,
         document.getElementById('root'),
     );
