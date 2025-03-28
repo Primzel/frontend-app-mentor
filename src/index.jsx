@@ -16,6 +16,7 @@ import './index.scss';
 import {store} from "./store";
 import {Routes, Route} from "react-router";
 import {PermissionProvidor} from "./common/context/PermissionContext";
+import BookAppointment from "./pages/book-appointment/BookAppointment";
 
 subscribe(APP_READY, () => {
     ReactDOM.render(
@@ -25,6 +26,11 @@ subscribe(APP_READY, () => {
                     <Route path={"/course/:courseId/appointments"} element={<>
                         <Header/>
                         <LandingPage/>
+                        <FooterSlot/>
+                    </>}></Route>
+                    <Route path={"/course/:courseId/book-mentor-call"} element={<>
+                        <Header/>
+                        <BookAppointment/>
                         <FooterSlot/>
                     </>}></Route>
                 </Routes>
