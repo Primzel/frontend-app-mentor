@@ -10,10 +10,9 @@ const CreateAppointmentForm = (props) => {
         onSubmit,
         onDelete,
         listMentors,
+        isSuperUser,
     } = props;
     const {slotInfo} = selectedSlot;
-    console.log(slotInfo)
-    console.log(listMentors)
     return (
         <Form onSubmit={function (e) {
             e.preventDefault();
@@ -58,13 +57,14 @@ const CreateAppointmentForm = (props) => {
                     </Form.Text>
                 </Form.Row>
             </>)}
-            {mode === "staff" && listMentors && <Form.Row className={"mb-3"}>
+            {mode === "staff" && isSuperUser && <Form.Row className={"mb-3"}>
                 <Form.Group as={Col} controlId="formMentorSelect">
                     <Form.Control
                         as="select"
                         name="mentor"
                         floatingLabel="Mentor"
                         defaultValue={slotInfo?.user || ""}
+                        required={isSuperUser}
                     >
                         {listMentors?.map((mentor) => (
                             <option key={mentor.id} value={mentor.id}>{mentor.username}</option>
@@ -107,7 +107,7 @@ const CreateAppointmentForm = (props) => {
                 <ActionRow.Spacer/>
                 <Button variant="tertiary" onClick={onCancel}>Cancel</Button>
                 {slotInfo && <Button variant="danger" onClick={onDelete}>Delete</Button>}
-                <Button type={"submit"}>{slotInfo ? "Update" : "Create"}</Button>
+                <Button type={"submit"} disabled={isSuperUser && !listMentors.length}>{slotInfo ? "Update" : "Create"}</Button>
             </ActionRow>
         </Form>
     )

@@ -21,6 +21,7 @@ const CreateEventSlotModal = (props) => {
         updateAppointmentSlot,
         title,
         listMentors,
+        isSuperUser,
     } = props;
 
     const {authenticatedUser} = useContext(AppContext);
@@ -69,6 +70,7 @@ const CreateEventSlotModal = (props) => {
             onCancel={close}
             onSubmit={onSubmit}
             onDelete={onDelete}
+            isSuperUser={isSuperUser}
         />
     </StandardModal>)
 }

@@ -10,11 +10,10 @@ const slice = createSlice({
     reducers: {
         setStudentBookings: (state, {payload}) => {
             const userColor = {
-                ...state.userColor,
-                ...(payload.reduce((acc, booking) => {
+                ...((payload||[]).reduce((acc, booking) => {
                     const color = state.userColor[`color-${booking.user}`] || generateColor();
                     return {...acc, [`color-${booking.user}`]: color}
-                }))
+                },state.userColor))
             }
 
             return {

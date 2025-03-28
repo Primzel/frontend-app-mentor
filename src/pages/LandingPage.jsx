@@ -14,6 +14,8 @@ const LandingPage = (props) => {
         fetchMyRoles,
         fetchMentorList
     } = props;
+    // Add state variables
+    const {myRolesInfo} = props;
     const {courseId: courseIdFromUrl} = useParams();
 
 
@@ -38,11 +40,11 @@ const LandingPage = (props) => {
             id="uncontrolled-tab-example"
         >
             <Tab eventKey="mentor-magement" title="Manage Mentors" className="mentor-management">
-                <ManageMentor/>
+                <ManageMentor myRolesInfo={myRolesInfo}/>
             </Tab>
 
             <Tab eventKey="mentor-schedule" title="Schedule" className="mentor-schedule">
-                <MentorSchedule/>
+                <MentorSchedule myRolesInfo={myRolesInfo}/>
             </Tab>
         </Tabs>}
     </div>

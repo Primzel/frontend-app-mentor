@@ -15,7 +15,10 @@ const MentorSchedule = (props) => {
 
 
     const {fetchAppointmentSlots} = props;
-    const {mentorList} = props
+    const {
+        mentorList,
+        myRolesInfo
+    } = props
 
 
     useEffect(() => {
@@ -26,7 +29,13 @@ const MentorSchedule = (props) => {
     return (
         <div className="mentor-calendar-container">
             <MentorCalendar/>
-            <CreateEventSlotModal title={"Create appointment slots."} mode="staff" courseId={courseIdFromUrl} listMentors={mentorList}/>
+            <CreateEventSlotModal
+                title={"Create appointment slots."}
+                mode="staff"
+                courseId={courseIdFromUrl}
+                listMentors={mentorList}
+                isSuperUser={myRolesInfo.is_superuser || false}
+            />
         </div>
     );
 }

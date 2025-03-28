@@ -33,11 +33,10 @@ const slice = createSlice({
         setAppointmentSlots: (state, {payload}) => {
             const {results} = payload;
             const userColor = {
-                ...state.userColor,
                 ...(results.reduce((acc, booking) => {
                     const color = state.userColor[`color-${booking.user}`] || generateColor();
                     return {...acc, [`color-${booking.user}`]: color}
-                }))
+                },state.userColor))
             }
 
             state.slots = results.map(event => ({...event, color: userColor[`color-${event.user}`]}))
