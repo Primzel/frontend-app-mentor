@@ -38,6 +38,20 @@ const MentorCalendar = ({slots, updateEvent, openCreateEventModal, createEventMo
         openCreateEventModal(!createEventModalState.open, start, end, slotInfo);
     }
 
+    const eventPropGetter = (event, start, end, isSelected) => {
+        const backgroundColor = event.color;
+        const style = {
+            backgroundColor,
+            borderRadius: '5px',
+            opacity: 0.8,
+            color: 'black',
+            display: 'block',
+        };
+        return {
+            style
+        }
+    }
+
 
     return (
         <div className="mentor-calendar-placeholder">
@@ -54,6 +68,7 @@ const MentorCalendar = ({slots, updateEvent, openCreateEventModal, createEventMo
                 resizable
                 onSelectSlot={onSlotSelect}
                 onSelectEvent={onSelectEvent}
+                eventPropGetter={eventPropGetter}
                 selectable
             />
         </div>
