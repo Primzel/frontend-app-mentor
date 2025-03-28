@@ -1,6 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {reducer as mentorScheduleReducer} from './pages/mentor-schedule/data/slice';
 import {reducer as mentorManagementReducer} from './pages/manage-mentor/data/slice';
+import {reducer as bookAppointmentReducer} from './pages/book-appointment/data/slice';
 import {reducer as commonReducer} from './common/data/slice';
 
 export default function initializeStore() {
@@ -8,6 +9,7 @@ export default function initializeStore() {
         reducer: {
             mentorScheduleReducer,
             mentorManagementReducer,
+            bookAppointmentReducer,
             commonReducer,
         },
         // temporarily solutions to disable serializable check for plugin actions

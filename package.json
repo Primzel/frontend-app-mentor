@@ -47,6 +47,7 @@
     "@openedx/frontend-slot-footer": "^1.0.2",
     "@openedx/paragon": "^22.0.0",
     "@reduxjs/toolkit": "^2.6.0",
+    "color-generator": "^0.1.0",
     "core-js": "3.40.0",
     "prop-types": "15.8.1",
     "react": "17.0.2",
