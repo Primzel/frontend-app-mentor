@@ -5,15 +5,16 @@ const slice = createSlice({
     name: 'student-bookings-store',
     initialState: {
         availableBookings: [],
-        userColor: {}
+        userColor: {},
+        currentSelectedBooking: null,
     },
     reducers: {
         setStudentBookings: (state, {payload}) => {
             const userColor = {
-                ...((payload||[]).reduce((acc, booking) => {
+                ...((payload || []).reduce((acc, booking) => {
                     const color = state.userColor[`color-${booking.user}`] || generateColor();
                     return {...acc, [`color-${booking.user}`]: color}
-                },state.userColor))
+                }, state.userColor))
             }
 
             return {
@@ -30,12 +31,19 @@ const slice = createSlice({
                 ...state,
                 availableBookings: []
             }
-        }
+        },
+        setCurrentSelectedBooking: (state, {payload}) => {
+            return {
+                ...state,
+                currentSelectedBooking: payload
+            }
+        },
     }
 })
 
 export const {
     setStudentBookings,
-    clearStudentBookings
+    clearStudentBookings,
+    setCurrentSelectedBooking
 } = slice.actions
 export const {reducer} = slice;

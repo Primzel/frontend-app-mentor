@@ -13,7 +13,8 @@ const DnDCalendar = withDragAndDrop(Calendar);
 const MentorCalendarStudentView = (props) => {
     // actions
     const {
-        fetchAvailableBooking
+        fetchAvailableBooking,
+        onSelectEvent
     } = props;
     // state
     const {
@@ -36,9 +37,6 @@ const MentorCalendarStudentView = (props) => {
         console.log(slotInfo);
     }
 
-    const onSelectEvent = (slotInfo) => {
-        console.log(slotInfo);
-    }
     const eventPropGetter = (event, start, end, isSelected) => {
         const backgroundColor = event.color;
         const style = {
