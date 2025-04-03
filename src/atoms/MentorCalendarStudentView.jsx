@@ -42,7 +42,7 @@ const MentorCalendarStudentView = (props) => {
         const style = {
             backgroundColor,
             borderRadius: '5px',
-            opacity: 0.8,
+            opacity: event.disabled ? 0.5 : 1,
             color: 'black',
             display: 'block',
         };

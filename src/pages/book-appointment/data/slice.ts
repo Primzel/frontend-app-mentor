@@ -11,19 +11,24 @@ const slice = createSlice({
     reducers: {
         setStudentBookings: (state, {payload}) => {
             const userColor = {
-                ...((payload || []).reduce((acc, booking) => {
+                ...((payload.available_slots || []).reduce((acc, booking) => {
                     const color = state.userColor[`color-${booking.user}`] || generateColor();
                     return {...acc, [`color-${booking.user}`]: color}
                 }, state.userColor))
             }
-
+            var availableBookings = payload.available_slots.map((booking) => {
+                const color = userColor[`color-${booking.organiser}`];
+                return {...booking, color}
+            });
+            availableBookings = availableBookings.concat(payload.booked_events.map(e => ({
+                ...e,
+                disabled: true,
+                color: userColor[`color-${e.user}`]
+            })));
             return {
                 ...state,
                 userColor: userColor,
-                availableBookings: payload.map((booking) => {
-                    const color = userColor[`color-${booking.user}`];
-                    return {...booking, color}
-                })
+                availableBookings: availableBookings
             }
         },
         clearStudentBookings: (state, {payload}) => {

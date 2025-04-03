@@ -20,7 +20,8 @@ const BookAppointment = (props) => {
     } = props;
 
     const onSelectEvent = (slotInfo) => {
-        console.log(authenticatedUser)
+        if (slotInfo.disabled)
+            return;
         const bookingData = {
             "event_name": "-",
             "description": "-",
