@@ -1,9 +1,9 @@
 import {bookMentoringSlotApi, fetchAvailableBookingApi} from "./api";
 import {setCurrentSelectedBooking, setStudentBookings} from "./slice";
 
-export function fetchAvailableBooking(userId, courseId) {
+export function fetchAvailableBooking(userId, courseId, start, end) {
     return async (dispatch) => {
-        fetchAvailableBookingApi(userId, courseId).then(({data}) => {
+        fetchAvailableBookingApi(userId, courseId, start, end).then(({data}) => {
             dispatch(setStudentBookings(data));
         })
     };

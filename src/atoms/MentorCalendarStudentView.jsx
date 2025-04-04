@@ -1,14 +1,18 @@
-import {Calendar, momentLocalizer} from 'react-big-calendar'
+import {Calendar, momentLocalizer, firs} from 'react-big-calendar'
 import moment from 'moment'
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import './mentor-calendar.scss'
 import {fetchAvailableBooking} from "../pages/book-appointment/data/thunk";
 import {connect} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useParams} from "react-router";
 
 const localizer = momentLocalizer(moment)
 const DnDCalendar = withDragAndDrop(Calendar);
+
+function formatDate(date) {
+    return moment(date).format('YYYY-MM-DD');
+}
 
 const MentorCalendarStudentView = (props) => {
     // actions
@@ -20,12 +24,16 @@ const MentorCalendarStudentView = (props) => {
     const {
         availableBookings
     } = props;
+    const startOfWeek = formatDate(moment().startOf("week"))
+    const endOfWeek = formatDate(moment().endOf("week"))
+    const [state, setState] = useState({startOfWeek, endOfWeek, view: "week"});
 
     const {courseId: courseIdFromUrl} = useParams();
 
     useEffect(() => {
-        fetchAvailableBooking(undefined, courseIdFromUrl);
-    }, []);
+
+        fetchAvailableBooking(undefined, courseIdFromUrl, state.startOfWeek, state.endOfWeek);
+    }, [state]);
     const onEventDrop = (data) => {
         console.log(data)
     };
@@ -67,7 +75,21 @@ const MentorCalendarStudentView = (props) => {
                 onSelectEvent={onSelectEvent}
                 selectable
                 eventPropGetter={eventPropGetter}
-            />
+                onView={(view,ax) => {
+                    console.log(ax)
+                    setState({
+                        ...state, view, startOfWeek: formatDate(moment(state.endOfWeek).startOf(view)),
+                        endOfWeek: formatDate(moment(state.endOfWeek).endOf(view))
+                    })
+                }}
+                onNavigate={(date, view) => {
+                    console.log(view)
+                    setState({
+                        view,
+                        startOfWeek: formatDate(moment(date).startOf(view)),
+                        endOfWeek: formatDate(moment(date).endOf(view))
+                    })
+                }}/>
         </div>
     )
 }

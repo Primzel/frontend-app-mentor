@@ -25,6 +25,9 @@ const CreateAppointmentForm = (props) => {
                     start_time: moment(formData.get("start_time")).format(),
                     end_time: moment(formData.get("end_time")).format(),
                     meeting_length: formData.get("meeting_length"),
+                    title: formData.get("title"),
+                    slot_type: formData.get("eventType"),
+                    description: formData.get("agenda"),
                     action: slotInfo ? "update" : "create",
                     id: slotInfo?.id || null
                 }
@@ -35,28 +38,50 @@ const CreateAppointmentForm = (props) => {
             return false;
         }}
         >
-            {mode !== "staff" && (<>
-                <Form.Row>
+            <Form.Row>
+                <Form.Control
+                    type="text"
+                    floatingLabel="Title"
+                    maxLength={254}
+                    name="title"
+                    defaultValue={slotInfo?.title || ""}
+                />
+                <Form.Text>
+                    This is the title of your meeting.
+                </Form.Text>
+            </Form.Row>
+            <Form.Row className={"mb-3"}>
+                <Form.Control
+                    type="text"
+                    floatingLabel="Agenda"
+                    as="textarea"
+                    name="agenda"
+                    defaultValue={slotInfo?.description || ""}
+                />
+                <Form.Text>
+                    Please describe the agenda of your meeting.
+                </Form.Text>
+            </Form.Row>
+            <Form.Row className={"mb-3"}>
+                <Form.Group as={Col} controlId="formEventType">
                     <Form.Control
-                        type="text"
-                        floatingLabel="Title"
-                        maxLength={254}
-                    />
+                        as="select"
+                        name="eventType"
+                        floatingLabel="Event Type"
+                        defaultValue={slotInfo?.slot_type || ""}
+                        required={isSuperUser}
+                    >
+                        <option key="one-time" value="one-time">One Time</option>
+                        <option key="recurring" value="recurring">Recurring</option>
+                        <option key="all-days" value="all-days">All Days</option>
+                        <option key="week-days" value="week-days">Week Days</option>
+                    </Form.Control>
                     <Form.Text>
-                        This is the title of your meeting.
+                        Please select the type for this appointment.
                     </Form.Text>
-                </Form.Row>
-                <Form.Row className={"mb-3"}>
-                    <Form.Control
-                        type="text"
-                        floatingLabel="Description"
-                        as="textarea"
-                    />
-                    <Form.Text>
-                        Please describe the agenda of your meeting.
-                    </Form.Text>
-                </Form.Row>
-            </>)}
+                </Form.Group>
+            </Form.Row>
+
             {mode === "staff" && isSuperUser && <Form.Row className={"mb-3"}>
                 <Form.Group as={Col} controlId="formMentorSelect">
                     <Form.Control
