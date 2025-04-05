@@ -2,7 +2,7 @@ import MentorCalendarStudentView from "../../atoms/MentorCalendarStudentView";
 import BookMentoringEvent from "../../atoms/BookMentoringEvent";
 import {useToggle} from "@openedx/paragon";
 import {useParams} from "react-router";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {AppContext} from "@edx/frontend-platform/react";
 import {connect} from "react-redux";
 import {storeCurrentSelectedBooking} from "./data/thunk";
@@ -10,6 +10,7 @@ import {bookMentoringSlotApi} from "./data/api";
 
 const BookAppointment = (props) => {
     const [isOpen, open, close] = useToggle(false);
+    const [shouldReloadAppointments, doReloadAppointments] = useState(false);
     const {courseId: courseIdFromUrl} = useParams();
     const {currentSelectedBooking} = props;
 
@@ -20,27 +21,30 @@ const BookAppointment = (props) => {
     } = props;
 
     const onSelectEvent = (slotInfo) => {
-        if (slotInfo.disabled)
-            return;
-        const bookingData = {
-            "event_name": "-",
-            "description": "-",
-            "start_time": slotInfo.start_time,
-            "end_time": slotInfo.end_time,
-            "organiser": slotInfo.user,
-            "guests": [
-                authenticatedUser.userId
-            ],
-            "course_id": courseIdFromUrl
-        }
+        if (slotInfo.disabled) {
+            storeCurrentSelectedBooking(slotInfo);
+        } else {
+            const bookingData = {
+                "event_name": "-",
+                "description": "-",
+                "start_time": slotInfo.start_time,
+                "end_time": slotInfo.end_time,
+                "organiser": slotInfo.user,
+                "guests": [
+                    authenticatedUser.userId
+                ],
+                "course_id": courseIdFromUrl
+            }
 
-        storeCurrentSelectedBooking(bookingData);
+            storeCurrentSelectedBooking(bookingData);
+        }
         open();
     }
 
     return (
         <div>
             <MentorCalendarStudentView
+                shouldReloadAppointments={shouldReloadAppointments}
                 onSelectEvent={onSelectEvent}
             />
             <BookMentoringEvent
@@ -50,17 +54,19 @@ const BookAppointment = (props) => {
                     storeCurrentSelectedBooking(null);
                     close()
                 }}
-                OK={() => {
+                OK={(eventInfo) => {
 
-                    bookMentoringSlotApi(currentSelectedBooking).then(() => {
+                    bookMentoringSlotApi({...currentSelectedBooking, ...eventInfo}).then(() => {
                         close();
                     }).catch((error) => {
                         console.log(error)
                     }).finally(() => {
                         storeCurrentSelectedBooking(null);
                         close();
+                        doReloadAppointments(!shouldReloadAppointments);
                     });
                 }}
+                currentSelectedBooking={currentSelectedBooking}
             />
         </div>
     )

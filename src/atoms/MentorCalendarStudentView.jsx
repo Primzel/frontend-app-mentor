@@ -1,4 +1,4 @@
-import {Calendar, momentLocalizer, firs} from 'react-big-calendar'
+import {Calendar, momentLocalizer} from 'react-big-calendar'
 import moment from 'moment'
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import './mentor-calendar.scss'
@@ -22,7 +22,7 @@ const MentorCalendarStudentView = (props) => {
     } = props;
     // state
     const {
-        availableBookings
+        availableBookings, shouldReloadAppointments
     } = props;
     const startOfWeek = formatDate(moment().startOf("week"))
     const endOfWeek = formatDate(moment().endOf("week"))
@@ -33,7 +33,7 @@ const MentorCalendarStudentView = (props) => {
     useEffect(() => {
 
         fetchAvailableBooking(undefined, courseIdFromUrl, state.startOfWeek, state.endOfWeek);
-    }, [state]);
+    }, [state, shouldReloadAppointments]);
     const onEventDrop = (data) => {
         console.log(data)
     };
@@ -89,7 +89,9 @@ const MentorCalendarStudentView = (props) => {
                         startOfWeek: formatDate(moment(date).startOf(view)),
                         endOfWeek: formatDate(moment(date).endOf(view))
                     })
-                }}/>
+                }}
+                loading={true}
+            />
         </div>
     )
 }
