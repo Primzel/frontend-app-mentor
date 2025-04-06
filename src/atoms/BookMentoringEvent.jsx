@@ -3,7 +3,7 @@ import {CheckCircle} from "@openedx/paragon/icons";
 import moment from "moment";
 import React from "react";
 
-const BookMentoringEvent = ({isOpen, open, close, OK, currentSelectedBooking}) => {
+const BookMentoringEvent = ({isOpen, open, close, OK, currentSelectedBooking,cancel}) => {
     let title = "Request Appointment Booking!";
     let summary = "You are about to book an appointment with a mentor. Please confirm your booking.";
     if (currentSelectedBooking?.disabled) {
@@ -23,6 +23,8 @@ const BookMentoringEvent = ({isOpen, open, close, OK, currentSelectedBooking}) =
                 {!currentSelectedBooking?.disabled &&
                     <Button variant="success" type={'submit'} ref={confirmBtnRef}
                             form={'bookEventForm'}>Confirm</Button>}
+                {currentSelectedBooking?.disabled &&
+                    <Button variant="danger" onClick={() => cancel(currentSelectedBooking)}>Cancel</Button>}
             </ActionRow>
         )}
         isOverflowVisible={true}

@@ -6,7 +6,7 @@ import {useContext, useState} from "react";
 import {AppContext} from "@edx/frontend-platform/react";
 import {connect} from "react-redux";
 import {storeCurrentSelectedBooking} from "./data/thunk";
-import {bookMentoringSlotApi} from "./data/api";
+import {bookMentoringSlotApi, cancelMentoringSlotApi} from "./data/api";
 
 const BookAppointment = (props) => {
     const [isOpen, open, close] = useToggle(false);
@@ -55,16 +55,29 @@ const BookAppointment = (props) => {
                     close()
                 }}
                 OK={(eventInfo) => {
-
                     bookMentoringSlotApi({...currentSelectedBooking, ...eventInfo}).then(() => {
+                        storeCurrentSelectedBooking(null);
                         close();
                     }).catch((error) => {
-                        console.log(error)
+                        console.error(error);
                     }).finally(() => {
                         storeCurrentSelectedBooking(null);
                         close();
                         doReloadAppointments(!shouldReloadAppointments);
                     });
+                }}
+                cancel={(slot)=>{
+
+                    cancelMentoringSlotApi(slot.id).then(() => {
+                        storeCurrentSelectedBooking(null);
+                        close();
+                    }).catch((error) => {
+                        console.error(error);
+                    }).finally(() => {
+                        storeCurrentSelectedBooking(null);
+                        close();
+                        doReloadAppointments(!shouldReloadAppointments);
+                    })
                 }}
                 currentSelectedBooking={currentSelectedBooking}
             />
