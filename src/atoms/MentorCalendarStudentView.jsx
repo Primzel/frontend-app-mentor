@@ -34,22 +34,13 @@ const MentorCalendarStudentView = (props) => {
 
         fetchAvailableBooking(undefined, courseIdFromUrl, state.startOfWeek, state.endOfWeek);
     }, [state, shouldReloadAppointments]);
-    const onEventDrop = (data) => {
-        console.log(data)
-    };
-    const onEventResize = (data) => {
-        console.log(data)
-    };
-
-    const onSlotSelect = (slotInfo) => {
-        console.log(slotInfo);
-    }
 
     const eventPropGetter = (event, start, end, isSelected) => {
         const backgroundColor = event.color;
         const style = {
             backgroundColor,
             borderRadius: '5px',
+            padding:'5px',
             opacity: event.disabled ? 0.5 : 1,
             color: 'black',
             display: 'block',
@@ -60,37 +51,29 @@ const MentorCalendarStudentView = (props) => {
     }
     return (
         <div className="mentor-calendar-placeholder">
-            <DnDCalendar
+            <Calendar
                 defaultView="week"
                 localizer={localizer}
-                onEventDrop={onEventDrop}
-                onEventResize={onEventResize}
                 events={availableBookings.map(event => ({
                     ...event,
                     start: moment(event.start_time).toDate(),
                     end: moment(event.end_time).toDate(),
                 }))}
-                resizable
-                onSelectSlot={onSlotSelect}
                 onSelectEvent={onSelectEvent}
-                selectable
                 eventPropGetter={eventPropGetter}
-                onView={(view,ax) => {
-                    console.log(ax)
+                onView={(view) => {
                     setState({
                         ...state, view, startOfWeek: formatDate(moment(state.endOfWeek).startOf(view)),
                         endOfWeek: formatDate(moment(state.endOfWeek).endOf(view))
                     })
                 }}
                 onNavigate={(date, view) => {
-                    console.log(view)
                     setState({
                         view,
                         startOfWeek: formatDate(moment(date).startOf(view)),
                         endOfWeek: formatDate(moment(date).endOf(view))
                     })
                 }}
-                loading={true}
             />
         </div>
     )

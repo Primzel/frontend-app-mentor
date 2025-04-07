@@ -7,15 +7,22 @@ export const PermissionProvidor = ({children}) => {
     const rolesInfo = useSelector((state) => state.commonReducer.myRolesInfo);
 
     const hasAppPermission = useCallback(() => {
-        if (rolesInfo) {
-            if (rolesInfo.course_roles && rolesInfo.course_roles.indexOf('mentor') > -1)
-                return true;
-            if (rolesInfo.is_superuser)
-                return true;
+        if (rolesInfo && rolesInfo.is_superuser) {
+            return true;
         }
         return false;
     }, [rolesInfo]);
-    const value = useMemo(() => ({hasAppPermission}), [hasAppPermission]);
+    const hasSchedulingPermission = useCallback(() => {
+        if (rolesInfo.is_superuser)
+            return true;
+        if (rolesInfo.course_roles && rolesInfo.course_roles.indexOf('mentor') > -1)
+            return true;
+        return false;
+    });
+    const value = useMemo(() => ({
+        hasAppPermission,
+        hasSchedulingPermission
+    }), [hasAppPermission, hasSchedulingPermission]);
     return (
         <PermissionContext.Provider value={value}>
             {children}

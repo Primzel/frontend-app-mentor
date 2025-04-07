@@ -4,7 +4,7 @@ import MentorSchedule from "./mentor-schedule/MentorSchedule";
 import ManageMentor from "./manage-mentor/ManageMentor";
 import {connect} from "react-redux";
 import {fetchMyRoles, fetchMentorList} from "../common/data/thunks";
-import {useEffect} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useParams} from "react-router";
 import {usePermission} from "../common/context/PermissionContext";
 
@@ -23,25 +23,27 @@ const LandingPage = (props) => {
         fetchMyRoles(courseIdFromUrl);
     }, []);
 
-    const {
-        hasAppPermission,
-    } = usePermission();
-
     useEffect(() => {
-        if (hasAppPermission()) {
+        if (myRolesInfo?.is_superuser) {
             fetchMentorList(courseIdFromUrl);
         }
-    }, [hasAppPermission]);
+    }, [myRolesInfo]);
 
     return <div className="mentor-app-landing-page">
-        {hasAppPermission() && <Tabs
+        {myRolesInfo?.is_superuser && <Tabs
             variant="tabs"
-            defaultActiveKey="mentor-magement"
-            id="uncontrolled-tab-example"
         >
+
+            <Tab eventKey="mentor-schedule" title="Schedule" className="mentor-schedule">
+                <MentorSchedule myRolesInfo={myRolesInfo}/>
+            </Tab>
             <Tab eventKey="mentor-magement" title="Manage Mentors" className="mentor-management">
                 <ManageMentor myRolesInfo={myRolesInfo}/>
             </Tab>
+        </Tabs>}
+        {!myRolesInfo?.is_superuser && <Tabs
+            variant="tabs"
+        >
 
             <Tab eventKey="mentor-schedule" title="Schedule" className="mentor-schedule">
                 <MentorSchedule myRolesInfo={myRolesInfo}/>

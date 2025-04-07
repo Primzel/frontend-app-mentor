@@ -7,6 +7,7 @@ import {AppContext} from "@edx/frontend-platform/react";
 import {connect} from "react-redux";
 import {storeCurrentSelectedBooking} from "./data/thunk";
 import {bookMentoringSlotApi, cancelMentoringSlotApi} from "./data/api";
+import "./student-schedule.scss";
 
 const BookAppointment = (props) => {
     const [isOpen, open, close] = useToggle(false);
@@ -42,7 +43,7 @@ const BookAppointment = (props) => {
     }
 
     return (
-        <div>
+        <div className="student-calendar-container">
             <MentorCalendarStudentView
                 shouldReloadAppointments={shouldReloadAppointments}
                 onSelectEvent={onSelectEvent}
@@ -66,7 +67,7 @@ const BookAppointment = (props) => {
                         doReloadAppointments(!shouldReloadAppointments);
                     });
                 }}
-                cancel={(slot)=>{
+                cancel={(slot) => {
 
                     cancelMentoringSlotApi(slot.id).then(() => {
                         storeCurrentSelectedBooking(null);

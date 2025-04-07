@@ -17,13 +17,13 @@ const slice = createSlice({
                 }, state.userColor))
             }
             var availableBookings = payload.available_slots.map((booking) => {
-                const color = userColor[`color-${booking.organiser}`];
+                const color = userColor[`color-${booking.user}`];
                 return {...booking, color}
             });
             availableBookings = availableBookings.concat(payload.booked_events.map(e => ({
                 ...e,
                 disabled: true,
-                color: userColor[`color-${e.user}`]
+                color: userColor[`color-${e.organizer}`]
             })));
             return {
                 ...state,
