@@ -9,7 +9,7 @@ const localizer = momentLocalizer(moment)
 const DnDCalendar = withDragAndDrop(Calendar);
 
 
-const MentorCalendar = ({slots, updateEvent, openCreateEventModal, createEventModalState}) => {
+const MentorCalendar = ({slots, updateEvent, openCreateEventModal, createEventModalState, onView, onNavigate}) => {
     const onEventDrop = (data) => {
         const {start, end, event} = data;
         updateEvent({...event, start_time: moment(start).format(), end_time: moment(end).format()});
@@ -60,7 +60,10 @@ const MentorCalendar = ({slots, updateEvent, openCreateEventModal, createEventMo
                 localizer={localizer}
                 onEventDrop={onEventDrop}
                 onEventResize={onEventResize}
-                events={slots.map(event => ({
+                events={slots.map((event) => {
+                    const events = event.events;
+                    return events.map(e => ({...e, color: event.color}))
+                }).flat().map(event => ({
                     ...event,
                     start: moment(event.start_time).toDate(),
                     end: moment(event.end_time).toDate(),
@@ -70,6 +73,8 @@ const MentorCalendar = ({slots, updateEvent, openCreateEventModal, createEventMo
                 onSelectEvent={onSelectEvent}
                 eventPropGetter={eventPropGetter}
                 selectable
+                onView={onView}
+                onNavigate={onNavigate}
             />
         </div>
     );

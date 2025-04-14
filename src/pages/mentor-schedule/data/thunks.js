@@ -12,15 +12,15 @@ import {
     updateAppointmentSlotApi
 } from "./api";
 
-export function createEvent(event) {
+export function createEvent(event, viewState) {
     return async function (dispatch, getState) {
-        createAppointmentSlot(event).then(({data}) => {
+        createAppointmentSlot(event, viewState).then(({data}) => {
             dispatch(addSlot({slot: data}));
         });
     }
 }
 
-export function updateAppointmentSlot(slot) {
+export function updateAppointmentSlot(slot, viewState) {
     return async function (dispatch, getState) {
         updateAppointmentSlotApi({
             start_time: slot.start_time,
@@ -30,7 +30,7 @@ export function updateAppointmentSlot(slot) {
             title: slot.title,
             slot_type: slot.slot_type,
             description: slot.description,
-        }, slot.id).then(({data}) => {
+        }, slot.id, viewState).then(({data}) => {
             dispatch(modifyEvent({slot: data}));
         })
     }
@@ -42,9 +42,9 @@ export function openCreateEventModal(open, start, end, slotInfo) {
     }
 }
 
-export function fetchAppointmentSlots(userId, courseId) {
+export function fetchAppointmentSlots(userId, courseId, filters) {
     return async function (dispatch) {
-        fetchAppointmentSlotApi(userId, courseId).then(({data}) => {
+        fetchAppointmentSlotApi(userId, courseId, filters).then(({data}) => {
             dispatch(setAppointmentSlots(data));
         });
 

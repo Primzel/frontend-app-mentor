@@ -21,6 +21,9 @@ const ManageMentor = (props) => {
             <h1>Manage Mentor</h1>
             <TableView
                 data={nonSupervisorMentor}
+                initialState={{
+                    pageSize: 30,
+                }}
                 columns={
                     [
                         {

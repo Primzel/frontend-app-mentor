@@ -22,6 +22,7 @@ const CreateEventSlotModal = (props) => {
         title,
         listMentors,
         isSuperUser,
+        viewState,
     } = props;
 
     const {authenticatedUser} = useContext(AppContext);
@@ -33,7 +34,7 @@ const CreateEventSlotModal = (props) => {
     const onSubmit = (slot) => {
         switch (slot.action) {
             case "update": {
-                updateAppointmentSlot({...slot, id: createEventModalState.slotInfo.id}).then(() => {
+                updateAppointmentSlot({...slot, id: createEventModalState.slotInfo.id}, viewState).then(() => {
                     close();
                 })
                 break;
@@ -42,7 +43,7 @@ const CreateEventSlotModal = (props) => {
                 if (!slot.user)
                     slot.user = authenticatedUser.userId;
                 slot.course_id = courseId;
-                createEvent(slot).then(() => {
+                createEvent(slot, viewState).then(() => {
                     close();
                 }).catch((error) => {
                     console.log(error)

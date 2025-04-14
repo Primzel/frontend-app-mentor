@@ -1,18 +1,15 @@
 import {Calendar, momentLocalizer} from 'react-big-calendar'
-import moment from 'moment'
+import moment from 'moment';
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import './mentor-calendar.scss'
 import {fetchAvailableBooking} from "../pages/book-appointment/data/thunk";
 import {connect} from "react-redux";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router";
+import {formatDate} from "../common/helper";
 
 const localizer = momentLocalizer(moment)
 const DnDCalendar = withDragAndDrop(Calendar);
-
-function formatDate(date) {
-    return moment(date).format('YYYY-MM-DD');
-}
 
 const MentorCalendarStudentView = (props) => {
     // actions
@@ -40,7 +37,7 @@ const MentorCalendarStudentView = (props) => {
         const style = {
             backgroundColor,
             borderRadius: '5px',
-            padding:'5px',
+            padding: '5px',
             opacity: event.disabled ? 0.5 : 1,
             color: 'black',
             display: 'block',
