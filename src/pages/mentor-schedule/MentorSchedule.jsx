@@ -37,6 +37,7 @@ const MentorSchedule = (props) => {
     return (
         <div className="mentor-calendar-container">
             <MentorCalendar
+                viewState={state}
                 onView={(view) => {
                     setState({
                         ...state, view, startOfWeek: formatDate(moment(state.endOfWeek).startOf(view)),
